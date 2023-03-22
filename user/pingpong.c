@@ -2,7 +2,7 @@
 #include "user/user.h"
 
 int main(int argc, char **argv) {
-  if (argc > 0) {
+  if (argc > 1) {
     fprintf(2, "usage: pingpong\n");
     exit(1);
   }
@@ -23,12 +23,11 @@ int main(int argc, char **argv) {
     read(fd[0], buf, 1);
     printf("%d: received ping\n", getpid());
     write(fd[1], &msg, 1);
-    exit(0);
   } else {
     write(fd[1], &msg, 1);
     // wait(NULL);
     read(fd[0], buf, 1); // read the byte from the child
     printf("%d: received pong\n", getpid());
-    exit(0);
   }
+  exit(0);
 }
