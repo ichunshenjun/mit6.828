@@ -21,95 +21,11 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/plic.o",
-            "kernel/plic.c"
+            "kernel/printf.o",
+            "kernel/printf.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/plic.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/start.o",
-            "kernel/start.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/start.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/virtio_disk.o",
-            "kernel/virtio_disk.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/virtio_disk.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/sysproc.o",
-            "kernel/sysproc.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/sysproc.c"
+        "file": "kernel/printf.c"
     },
     {
         "arguments": [
@@ -161,11 +77,22 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/pipe.o",
-            "kernel/pipe.c"
+            "kernel/exec.o",
+            "kernel/exec.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/pipe.c"
+        "file": "kernel/exec.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-o",
+            "kernel/kernelvec.o",
+            "kernel/kernelvec.S"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/kernelvec.S"
     },
     {
         "arguments": [
@@ -189,11 +116,50 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/bio.o",
-            "kernel/bio.c"
+            "kernel/spinlock.o",
+            "kernel/spinlock.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/bio.c"
+        "file": "kernel/spinlock.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/console.o",
+            "kernel/console.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/console.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-o",
+            "kernel/swtch.o",
+            "kernel/swtch.S"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/swtch.S"
     },
     {
         "arguments": [
@@ -210,12 +176,180 @@
         "arguments": [
             "riscv64-linux-gnu-gcc",
             "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
             "-o",
-            "kernel/kernelvec.o",
-            "kernel/kernelvec.S"
+            "kernel/trap.o",
+            "kernel/trap.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/kernelvec.S"
+        "file": "kernel/trap.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/virtio_disk.o",
+            "kernel/virtio_disk.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/virtio_disk.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-o",
+            "kernel/trampoline.o",
+            "kernel/trampoline.S"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/trampoline.S"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/fs.o",
+            "kernel/fs.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/fs.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/sysfile.o",
+            "kernel/sysfile.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/sysfile.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/uart.o",
+            "kernel/uart.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/uart.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/plic.o",
+            "kernel/plic.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/plic.c"
     },
     {
         "arguments": [
@@ -271,11 +405,11 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/fs.o",
-            "kernel/fs.c"
+            "kernel/sleeplock.o",
+            "kernel/sleeplock.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/fs.c"
+        "file": "kernel/sleeplock.c"
     },
     {
         "arguments": [
@@ -299,11 +433,11 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/console.o",
-            "kernel/console.c"
+            "kernel/pipe.o",
+            "kernel/pipe.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/console.c"
+        "file": "kernel/pipe.c"
     },
     {
         "arguments": [
@@ -327,67 +461,11 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/main.o",
-            "kernel/main.c"
+            "kernel/start.o",
+            "kernel/start.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/main.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/vm.o",
-            "kernel/vm.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/vm.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/trap.o",
-            "kernel/trap.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/trap.c"
+        "file": "kernel/start.c"
     },
     {
         "arguments": [
@@ -439,162 +517,11 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/file.o",
-            "kernel/file.c"
+            "kernel/bio.o",
+            "kernel/bio.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/file.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-o",
-            "kernel/swtch.o",
-            "kernel/swtch.S"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/swtch.S"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/printf.o",
-            "kernel/printf.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/printf.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/exec.o",
-            "kernel/exec.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/exec.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/uart.o",
-            "kernel/uart.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/uart.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/sleeplock.o",
-            "kernel/sleeplock.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/sleeplock.c"
-    },
-    {
-        "arguments": [
-            "riscv64-linux-gnu-gcc",
-            "-c",
-            "-Wall",
-            "-Werror",
-            "-O",
-            "-fno-omit-frame-pointer",
-            "-ggdb",
-            "-gdwarf-2",
-            "-DSOL_UTIL",
-            "-DLAB_UTIL",
-            "-mcmodel=medany",
-            "-ffreestanding",
-            "-fno-common",
-            "-nostdlib",
-            "-mno-relax",
-            "-I.",
-            "-fno-stack-protector",
-            "-fno-pie",
-            "-no-pie",
-            "-o",
-            "kernel/proc.o",
-            "kernel/proc.c"
-        ],
-        "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/proc.c"
+        "file": "kernel/bio.c"
     },
     {
         "arguments": [
@@ -628,12 +555,29 @@
         "arguments": [
             "riscv64-linux-gnu-gcc",
             "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
             "-o",
-            "kernel/trampoline.o",
-            "kernel/trampoline.S"
+            "kernel/sysproc.o",
+            "kernel/sysproc.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/trampoline.S"
+        "file": "kernel/sysproc.c"
     },
     {
         "arguments": [
@@ -657,11 +601,39 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/spinlock.o",
-            "kernel/spinlock.c"
+            "kernel/vm.o",
+            "kernel/vm.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/spinlock.c"
+        "file": "kernel/vm.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/main.o",
+            "kernel/main.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/main.c"
     },
     {
         "arguments": [
@@ -713,10 +685,38 @@
             "-fno-pie",
             "-no-pie",
             "-o",
-            "kernel/sysfile.o",
-            "kernel/sysfile.c"
+            "kernel/file.o",
+            "kernel/file.c"
         ],
         "directory": "/home/zkz/xv6-labs-2022",
-        "file": "kernel/sysfile.c"
+        "file": "kernel/file.c"
+    },
+    {
+        "arguments": [
+            "riscv64-linux-gnu-gcc",
+            "-c",
+            "-Wall",
+            "-Werror",
+            "-O",
+            "-fno-omit-frame-pointer",
+            "-ggdb",
+            "-gdwarf-2",
+            "-DSOL_UTIL",
+            "-DLAB_UTIL",
+            "-mcmodel=medany",
+            "-ffreestanding",
+            "-fno-common",
+            "-nostdlib",
+            "-mno-relax",
+            "-I.",
+            "-fno-stack-protector",
+            "-fno-pie",
+            "-no-pie",
+            "-o",
+            "kernel/proc.o",
+            "kernel/proc.c"
+        ],
+        "directory": "/home/zkz/xv6-labs-2022",
+        "file": "kernel/proc.c"
     }
 ]
