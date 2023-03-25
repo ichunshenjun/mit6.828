@@ -91,3 +91,21 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+// Add a sys_trace() function in kernel/sysproc.c 
+uint64
+sys_trace(void)
+{
+  int mask;
+  argint(0, &mask);
+  myproc()->mask=mask;
+  return 0;
+}
+
+// Add a sys_sysinfo() function in kernel/sysproc.c 
+uint64
+sys_sysinfo(void)
+{
+  printf("hello\n");
+  return 0;
+}
