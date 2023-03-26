@@ -1,0 +1,11 @@
+1.Looking at the backtrace output, which function called syscall?
+我们从backtrace的调用链可以发现这里的usertrap()调用了syscall
+2.
+3.What was the previous mode that the CPU was in?
+sstatus的第8位如果是0,说明他之前是从用户态切换过来的，如果是1说明他之前是从内核切换过来的
+0x22的第8位=0,所以他是之前是在用户态
+4.
+5.Why does the kernel crash? Hint: look at figure 3-3 in the text; is address 0 mapped in the kernel address space? Is that confirmed by the value in scause above? (See description of scause in RISC-V privileged instructions)
+首先在虚拟地址映射的时候0,并没有被映射到任何地址上，我们在程序中使用的地址，所有都是虚拟地址
+所以，自然无法获取他对应的值
+6.
