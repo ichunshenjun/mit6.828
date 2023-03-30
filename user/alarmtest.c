@@ -48,7 +48,9 @@ test0()
   int i;
   printf("test0 start\n");
   count = 0;
+  printf("sigalarm start\n");
   sigalarm(2, periodic);
+  printf("sigalarm end\n");
   for(i = 0; i < 1000*500000; i++){
     if((i % 1000000) == 0)
       write(2, ".", 1);
