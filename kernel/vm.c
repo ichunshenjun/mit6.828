@@ -349,10 +349,29 @@ uvmclear(pagetable_t pagetable, uint64 va)
 int
 copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 {
+  
   uint64 n, va0, pa0;
 
   while(len > 0){
     va0 = PGROUNDDOWN(dstva);
+    if (va0 >= MAXVA){
+      return -1;
+    }
+    pte_t *pte = walk(pagetable, va0, 0);
+    if(pte == 0 || ((*pte & PTE_V) == 0) || ((*pte & PTE_U) == 0)){
+      return -1;
+    }
+    uint64 pa=PTE2PA(*pte);
+    if((*pte&PTE_C)&&(*pte&PTE_U)&&*pte&PTE_V){
+      int flags=(PTE_FLAGS(*pte)&~PTE_C)|PTE_W;
+      char *mem=kalloc();
+      memmove(mem,(char*)pa,PGSIZE);
+      uvmunmap(pagetable, va0, 1, 1);
+      if(mappages(pagetable, va0, PGSIZE, (uint64)mem, flags)!=0){
+        kfree(mem);
+        return -1;
+      }
+    }
     pa0 = walkaddr(pagetable, va0);
     if(pa0 == 0)
       return -1;

@@ -70,9 +70,19 @@ usertrap(void)
   } else if(r_scause()==15){// 如果本身父进程就只读的页面是不会触发store错误的
     uint64 va=r_stval();
     va=PGROUNDDOWN(va);
+    if (va >= MAXVA||va<PGSIZE){ // 需要通过MAXVAplus和textwrite
+      setkilled(p);
+      if(killed(p))
+        exit(-1);
+    }
     pte_t *pte = walk(p->pagetable, va, 0);
+    if(pte==0){
+      setkilled(p);
+      if(killed(p))
+        exit(-1);
+    }
     uint64 pa=PTE2PA(*pte);
-    if(*pte&PTE_C){
+    if((*pte&PTE_C)&&(*pte&PTE_U)&&(*pte&PTE_V)){
       int flags=(PTE_FLAGS(*pte)&~PTE_C)|PTE_W;
       char *mem=kalloc();
       memmove(mem,(char*)pa,PGSIZE);
