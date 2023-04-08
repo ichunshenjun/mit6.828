@@ -67,19 +67,19 @@ testsymlink(void)
   fd1 = open("/testsymlink/a", O_CREATE | O_RDWR);
   if(fd1 < 0) fail("failed to open a");
 
-  r = symlink("/testsymlink/a", "/testsymlink/b");
+  r = symlink("/testsymlink/a", "/testsymlink/b"); // 这样b的inode对应的type会是软链接类型
   if(r < 0)
     fail("symlink b -> a failed");
 
   if(write(fd1, buf, sizeof(buf)) != 4)
     fail("failed to write to a");
 
-  if (stat_slink("/testsymlink/b", &st) != 0)
+  if (stat_slink("/testsymlink/b", &st) != 0) // 以不跟随模式打开，这里直接返回b的inode相关信息会被存储在st里
     fail("failed to stat b");
   if(st.type != T_SYMLINK)
     fail("b isn't a symlink");
 
-  fd2 = open("/testsymlink/b", O_RDWR);
+  fd2 = open("/testsymlink/b", O_RDWR); //以跟随模式打开（直接打开软链接），fd其实会与b最终链接的a的inode有关
   if(fd2 < 0)
     fail("failed to open b");
   read(fd2, &c, 1);

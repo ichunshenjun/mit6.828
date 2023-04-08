@@ -745,7 +745,7 @@ namei(char *path)
 }
 
 struct inode*
-nameiparent(char *path, char *name)
+nameiparent(char *path, char *name)// 这里的name就是path的文件如果path是a/b则name是b
 {
   return namex(path, 1, name);
 }
