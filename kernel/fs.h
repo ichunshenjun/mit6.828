@@ -44,7 +44,7 @@ struct dinode {
 #define IPB           (BSIZE / sizeof(struct dinode))
 
 // Block containing inode i
-#define IBLOCK(i, sb)     ((i) / IPB + sb.inodestart)
+#define IBLOCK(i, sb)     ((i) / IPB + sb.inodestart) // 找到编号为i的inode对应磁盘上的块号，sb是超级块
 
 // Bitmap bits per block
 #define BPB           (BSIZE*8)

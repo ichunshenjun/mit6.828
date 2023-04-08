@@ -229,7 +229,7 @@ iupdate(struct inode *ip)
   struct dinode *dip;
 
   bp = bread(ip->dev, IBLOCK(ip->inum, sb));
-  dip = (struct dinode*)bp->data + ip->inum%IPB;
+  dip = (struct dinode*)bp->data + ip->inum%IPB;// 找到该block的对应位置
   dip->type = ip->type;
   dip->major = ip->major;
   dip->minor = ip->minor;
