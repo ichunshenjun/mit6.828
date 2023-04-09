@@ -507,7 +507,36 @@ sys_pipe(void)
 uint64
 sys_mmap(void)
 {
-  return 0;
+  uint64 address;
+  int length,prot,flags,fd,offset;
+  argaddr(0, &address);
+  argint(1, &length);
+  argint(2, &prot);
+  argint(3, &flags);
+  argint(4, &fd);
+  argint(5, &offset);
+  struct proc *p=myproc();
+  struct file *f=p->ofile[fd];
+  if(f==0){
+    return -1;
+  }
+  struct VMA *vma=0;
+  for(int i=0;i<16;i++){
+    if(p->VMAs[i].file==0){
+      vma=&p->VMAs[i];
+      break;
+    }
+  }
+  if(vma==0){
+    return -1;
+  }
+  vma->file=filedup(f);
+  vma->address=address;
+  vma->length=length;
+  vma->offset=offset;
+  vma->flags=flags;
+  vma->prot=prot;
+  return (uint64)vma->file->ip->addrs;
 }
 
 uint64
