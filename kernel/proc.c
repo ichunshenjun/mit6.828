@@ -5,6 +5,8 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "fcntl.h"
+// #include <string.h>
 
 struct cpu cpus[NCPU];
 
@@ -139,7 +141,9 @@ found:
     release(&p->lock);
     return 0;
   }
-
+  for(int i=0;i<16;i++){
+    memset(&p->VMAs[i],0,sizeof(struct VMA));
+  }
   // Set up new context to start executing at forkret,
   // which returns to user space.
   memset(&p->context, 0, sizeof(p->context));
@@ -294,8 +298,15 @@ fork(void)
     release(&np->lock);
     return -1;
   }
-  np->sz = p->sz;
 
+  for(int i=0;i<16;i++){
+    memset(&np->VMAs[i],0,sizeof(struct VMA));
+    memmove(&np->VMAs[i], &p->VMAs[i], sizeof(p->VMAs[i]));
+    if(np->VMAs[i].file){
+      filedup(p->VMAs[i].file);
+    }
+  }
+  np->sz = p->sz;
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
 
@@ -351,6 +362,20 @@ exit(int status)
   if(p == initproc)
     panic("init exiting");
 
+  // for(int i = 0; i < 16; ++i) {
+  //   printf("exit:%p %p %d\n",p->VMAs[i].file,p->VMAs[i].address,p->VMAs[i].length/PGSIZE);
+  // }
+  for(int i = 0; i < 16; ++i) {
+    if(p->VMAs[i].file) {
+      if(p->VMAs[i].flags == MAP_SHARED && (p->VMAs[i].prot & PROT_WRITE) != 0) {
+        filewrite(p->VMAs[i].file, p->VMAs[i].address, p->VMAs[i].length);
+      }
+      fileclose(p->VMAs[i].file);
+      if(p->VMAs[i].offset&&p->VMAs[i].length&&p->VMAs[i].address!=0){
+        uvmunmap(p->pagetable, p->VMAs[i].address, p->VMAs[i].length / PGSIZE, 1);
+      }
+    }
+  }
   // Close all open files.
   for(int fd = 0; fd < NOFILE; fd++){
     if(p->ofile[fd]){

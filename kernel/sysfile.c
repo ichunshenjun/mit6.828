@@ -516,10 +516,16 @@ sys_mmap(void)
   argint(4, &fd);
   argint(5, &offset);
   struct proc *p=myproc();
+  // 没有足够的虚拟地址空间
+  if(p->sz + length > MAXVA)
+    return -1;
   struct file *f=p->ofile[fd];
   if(f==0){
     return -1;
   }
+  // 文件不可写则不允许拥有PROT_WRITE权限时映射为MAP_SHARED
+  if(f->writable == 0 && (prot & PROT_WRITE) != 0 && flags == MAP_SHARED)
+    return -1;
   struct VMA *vma=0;
   for(int i=0;i<16;i++){
     if(p->VMAs[i].file==0){
@@ -531,16 +537,51 @@ sys_mmap(void)
     return -1;
   }
   vma->file=filedup(f);
-  vma->address=address;
+  vma->address=p->sz;
   vma->length=length;
   vma->offset=offset;
   vma->flags=flags;
   vma->prot=prot;
-  return (uint64)vma->file->ip->addrs;
+  p->sz+=length;
+  return vma->address;
 }
 
 uint64
 sys_munmap(void)
 {
-  return 0;
+  uint64 address;
+  int length;
+  argaddr(0, &address);
+  argint(1, &length);
+  struct proc *p=myproc();
+  for(int i=0;i<16;i++){
+    uint64 down=p->VMAs[i].address;
+    uint64 up=p->VMAs[i].address+p->VMAs[i].length-1;
+    if(address>=down&&address<=up){
+      if(p->VMAs[i].flags==MAP_SHARED&& (p->VMAs[i].prot & PROT_WRITE) != 0){
+        filewrite(p->VMAs[i].file,address,length);
+      }
+      if(p->VMAs[i].offset==0){
+        p->VMAs[i].address=address+length;
+        p->VMAs[i].length-=length;
+        if(p->VMAs[i].length==0){
+          fileclose(p->VMAs[i].file);
+          memset(&(p->VMAs[i]),0,sizeof(struct VMA));
+        }
+        return 0;
+      }
+      uvmunmap(p->pagetable,address,length/PGSIZE,0);
+      if(length==p->VMAs[i].length){
+        fileclose(p->VMAs[i].file);
+        memset(&(p->VMAs[i]),0,sizeof(struct VMA));
+      }
+      else{
+        p->VMAs[i].address=address+length;
+        p->VMAs[i].length-=length;
+        p->VMAs[i].offset-=length;
+      }
+      return 0;
+    }
+  }
+  return -1;
 }

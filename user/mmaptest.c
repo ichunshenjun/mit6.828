@@ -279,7 +279,7 @@ fork_test(void)
     munmap(p1, PGSIZE); // just the first page
     exit(0); // tell the parent that the mapping looks OK.
   }
-
+      
   int status = -1;
   wait(&status);
 
@@ -289,6 +289,7 @@ fork_test(void)
   }
 
   // check that the parent's mappings are still there.
+
   _v1(p1);
   _v1(p2);
 

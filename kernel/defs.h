@@ -3,11 +3,13 @@ struct context;
 struct file;
 struct inode;
 struct pipe;
+struct VMA;
 struct proc;
 struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+
 
 // bio.c
 void            binit(void);

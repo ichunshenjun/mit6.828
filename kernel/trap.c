@@ -6,6 +6,11 @@
 #include "proc.h"
 #include "defs.h"
 
+#include "fs.h"
+#include "sleeplock.h"
+#include "file.h"
+#include "fcntl.h"
+
 struct spinlock tickslock;
 uint ticks;
 
@@ -67,9 +72,43 @@ usertrap(void)
     syscall();
   } else if((which_dev = devintr()) != 0){
     // ok
-  } else if(r_scause() == 12||r_scause() == 13||r_scause() == 15){
-    uint64 stval=r_stval();
-    
+  } 
+  else if(r_scause() == 13||r_scause() == 15||r_scause()==12){
+    uint64 va=r_stval();
+    va=PGROUNDDOWN(va);
+    int index=-1;
+    for(int i=0;i<16;i++){
+      uint64 down=p->VMAs[i].address;
+      uint64 up=p->VMAs[i].address+p->VMAs[i].length-1;
+      if(va>=down&&va<=up){
+        index=i;
+        break;
+      }
+    }
+    if(index==-1){
+      exit(-1);
+    }
+    struct file *file=p->VMAs[index].file;
+    if(r_scause()==13&&file->readable==0){
+      exit(-1);
+    }
+    if(r_scause()==15&&file->writable==0){
+      exit(-1);
+    }
+    char *mem=kalloc();
+    memset((char*)mem, 0, PGSIZE);
+    int pte_flags = PTE_V|PTE_U;
+    if(p->VMAs[index].prot & PROT_READ) pte_flags |= PTE_R;
+    if(p->VMAs[index].prot & PROT_WRITE) pte_flags |= PTE_W;
+    if(p->VMAs[index].prot & PROT_EXEC) pte_flags |= PTE_X;
+    ilock(file->ip);
+    readi(file->ip,0,(uint64)mem,p->VMAs[index].offset,PGSIZE);
+    iunlock(file->ip);
+    if(mappages(p->pagetable, p->VMAs[index].address+p->VMAs[index].offset,PGSIZE, (uint64)mem, pte_flags)!=0){
+      kfree(mem);
+      setkilled(p);
+    }
+    p->VMAs[index].offset+=PGSIZE;
   }
   else {
     printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
