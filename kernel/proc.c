@@ -366,14 +366,13 @@ exit(int status)
   //   printf("exit:%p %p %d\n",p->VMAs[i].file,p->VMAs[i].address,p->VMAs[i].length/PGSIZE);
   // }
   for(int i = 0; i < 16; ++i) {
-    if(p->VMAs[i].file) {
+    if(p->VMAs[i].file&&walkaddr( p->pagetable , p->VMAs[i].address ) != 0) {
       if(p->VMAs[i].flags == MAP_SHARED && (p->VMAs[i].prot & PROT_WRITE) != 0) {
         filewrite(p->VMAs[i].file, p->VMAs[i].address, p->VMAs[i].length);
       }
       fileclose(p->VMAs[i].file);
-      if(p->VMAs[i].offset&&p->VMAs[i].length&&p->VMAs[i].address!=0){
-        uvmunmap(p->pagetable, p->VMAs[i].address, p->VMAs[i].length / PGSIZE, 1);
-      }
+      uvmunmap(p->pagetable, p->VMAs[i].address, p->VMAs[i].length / PGSIZE, 1);
+      memset(&p->VMAs[i],0,sizeof(struct VMA));
     }
   }
   // Close all open files.

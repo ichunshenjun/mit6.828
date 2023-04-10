@@ -172,7 +172,6 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
 {
   uint64 a;
   pte_t *pte;
-  // printf("uvmunmap:%p %d\n",va,npages);
   if((va % PGSIZE) != 0)
     panic("uvmunmap: not aligned");
 
